@@ -55,4 +55,28 @@ Open your MySQL client or command line and create the database expected by the a
 ```
 CREATE DATABASE inventory;
 ```
-Note: The application settings.py is configured to use the MySQL root user with no password on localhost. If your local MySQL setup requires a password, update the DATABASES dictionary inside inventory_project/settings.py.
+Note: The application `settings.py` is configured to use the MySQL `root` user with no password on `localhost`. If your local MySQL setup requires a password, update the `DATABASES` dictionary inside `inventory_project/settings.py`.
+**5. Apply Database Migrations:**
+Initialize your database tables for the `Product` and `Supplier` models:
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+**6. Create an Admin User:**
+Create a superuser account to access all features of the application:
+```
+python manage.py createsuperuser
+```
+**7. Run the Development Server:**
+```
+python manage.py runserver
+```
+**8. Access the Application:**
+Open your web browser and navigate to `http://127.0.0.1:8000/`. You will be redirected to the login page. Enter the superuser credentials you created in Step 6 to access the dashboard.
+
+## 📁 Project Structure
+* `inventory/` - The main application containing the models, views, forms, and templates.
+
+* `inventory_project/` - The core Django project directory containing configuration and global URLs.
+
+* `inventory/templates/` - HTML templates including the `dashboard.html`, `form.html`, `report.html`, and `base` layout.
