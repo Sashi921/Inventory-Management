@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Inventory System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f5f7fb;
+        overflow-x: hidden;
+      }
+      
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh; /* full screen height */
+        width: 220px;
+        background: #1e293b;
+        color: white;
+        padding: 20px;
+      }
+      
+      .sidebar a {
+        color: #cbd5f5;
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        border-radius: 8px;
+      }
+      
+      .sidebar a:hover {
+        background: #334155;
+        color: white;
+      }
+      
+      .content {
+        margin-left: 220px;
+        padding: 20px;
+        width: calc(100% - 220px); /* 🔥 prevents overflow */
+      }
+      
+      .card {
+        border: none;
+        border-radius: 12px;
+      }
+      
+      .table {
+        width: 100%;
+      }
+      
+      table {
+        table-layout: fixed;
+        word-wrap: break-word;
+      }
+      
+      .btn {
+        border-radius: 8px;
+      }
+      
+      input.form-control {
+        border-radius: 8px;
+      }
+      .status.out {
+        background: #fecaca;
+        color: #b91c1c;
+        font-weight: 600;
+      }
+      
+      /* Google font look */
+      th {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      
+      /* Different header colors */
+      th:nth-child(1) {
+        color: #3b82f6;
+      }
+      th:nth-child(2) {
+        color: #10b981;
+      }
+      th:nth-child(3) {
+        color: #f59e0b;
+      }
+      th:nth-child(4) {
+        color: #ef4444;
+      }
+      th:nth-child(5) {
+        color: #8b5cf6;
+      }
+      
+      /* Table style */
+      .modern-table {
+        border-collapse: separate;
+        border-spacing: 0 10px;
+      }
+      
+      /* Row design */
+      .modern-table tbody tr {
+        background: white;
+        border-radius: 10px;
+        transition: 0.2s;
+      }
+      
+      .modern-table tbody tr:hover {
+        transform: scale(1.01);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+      
+      /* Cells spacing */
+      .modern-table td {
+        padding: 12px;
+      }
+      
+      /* Status badges */
+      .status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      
+      .status.low {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+      
+      .status.ok {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+      
+      /* Stat cards */
+      .stat-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-radius: 12px;
+      }
+      
+      /* Icon styling */
+      .icon {
+        font-size: 28px;
+        padding: 12px;
+        border-radius: 50%;
+      }
+      
+      .icon.blue {
+        background: #dbeafe;
+        color: #2563eb;
+      }
+      
+      .icon.red {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+      
+      .icon.green {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+          <h4>📦 Inventory</h4>
+          <hr />
+
+          <a href="/">Dashboard</a>
+          <a href="/report/">Reports</a>
+
+          <hr />
+
+          <p class="small">
+            {{ user.username }} <br />
+
+            {% if user.is_superuser %}
+              <span class="badge bg-danger">Admin</span>
+            {% elif user.is_staff %}
+              <span class="badge bg-info text-dark">Staff</span>
+            {% else %}
+              <span class="badge bg-secondary">User</span>
+            {% endif %}
+          </p>
+
+          <form action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-danger btn-sm w-100">Logout</button>
+          </form>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="content">
+          {% block content %}
+
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

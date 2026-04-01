@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-4">Reports</h3>
+
+<!-- STATS -->
+<div class="row g-4 mb-4">
+
+    <!-- Total Products -->
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm">
+            <div>
+                <h6>Total Products</h6>
+                <h2>{{ total }}</h2>
+            </div>
+            <div class="icon blue">📦</div>
+        </div>
+    </div>
+
+    <!-- Low Stock -->
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm">
+            <div>
+                <h6>Low Stock</h6>
+                <h2 class="text-danger">{{ low }}</h2>
+            </div>
+            <div class="icon red">⚠</div>
+        </div>
+    </div>
+
+    <!-- Healthy Stock -->
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm">
+            <div>
+                <h6>Healthy Items</h6>
+                <h2 class="text-success">{{ healthy }}</h2>
+            </div>
+            <div class="icon green">✔</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- CHART SECTION -->
+<div class="card shadow-sm p-4">
+    <h5 class="mb-3">Stock Overview</h5>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+new Chart(document.getElementById('myChart'), {
+    type: 'bar',
+    data: {
+        labels: {{ names|safe }},
+        datasets: [{
+            label: 'Stock Quantity',
+            data: {{ quantities|safe }},
+            borderRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

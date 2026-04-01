@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="mb-4">Add / Edit Product</h2>
+
+<div class="card shadow p-4">
+    <form method="POST" onsubmit="clearFormData()">
+        {% csrf_token %}
+
+        <!-- Name -->
+        <div class="mb-3">
+            <label>Name</label>
+            {{ form.name }}
+        </div>
+
+        <!-- Quantity -->
+        <div class="mb-3">
+            <label>Quantity</label>
+            {{ form.quantity }}
+        </div>
+
+        <!-- Price -->
+        <div class="mb-3">
+            <label>Price</label>
+            {{ form.price }}
+        </div>
+
+        <!-- Supplier -->
+        <div class="mb-3">
+            <label>Supplier</label>
+
+            <div class="d-flex align-items-center gap-2">
+                {{ form.supplier }}
+
+                <a href="{% url 'add_supplier' %}" 
+                   onclick="saveFormData()" 
+                   class="btn btn-outline-primary btn-sm">
+                    +
+                </a>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="/" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+<!-- SAVE DATA BEFORE GOING -->
+<script>
+function saveFormData() {
+    sessionStorage.setItem("returning_from_supplier", "true");
+
+    localStorage.setItem("name", document.querySelector("[name='name']").value);
+    localStorage.setItem("quantity", document.querySelector("[name='quantity']").value);
+    localStorage.setItem("price", document.querySelector("[name='price']").value);
+}
+</script>
+
+<!-- RESTORE ONLY WHEN RETURNING -->
+<script>
+window.onload = function() {
+    if (sessionStorage.getItem("returning_from_supplier")) {
+
+        document.querySelector("[name='name']").value = localStorage.getItem("name") || "";
+        document.querySelector("[name='quantity']").value = localStorage.getItem("quantity") || "";
+        document.querySelector("[name='price']").value = localStorage.getItem("price") || "";
+
+        sessionStorage.removeItem("returning_from_supplier");
+    }
+}
+</script>
+
+<!-- CLEAR AFTER SUBMIT -->
+<script>
+function clearFormData() {
+    localStorage.removeItem("name");
+    localStorage.removeItem("quantity");
+    localStorage.removeItem("price");
+}
+</script>
+
+{% endblock %}

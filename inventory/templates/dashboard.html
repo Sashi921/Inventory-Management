@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3 class="mb-4">Dashboard</h3>
+
+  <!-- SEARCH + ADD -->
+  <div class="d-flex justify-content-between mb-3">
+    <form method="GET" style="width: 300px;">
+      <input type="text" name="q" placeholder="Search..." class="form-control" />
+    </form>
+
+    {% if user.is_superuser or user.is_staff %}
+      <a href="/add/" class="btn btn-primary">+ Add Product</a>
+    {% endif %}
+  </div>
+
+  <!-- TABLE -->
+  <div class="card shadow-sm p-3">
+    <table class="table align-middle modern-table">
+      <thead>
+        <tr>
+          <th>📦 Product</th>
+          <th>📊 Stock</th>
+          <th>💰 Price</th>
+          <th>⚠ Status</th>
+          <th>⚙ Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for product in products %}
+          <tr>
+            <td>
+              <strong>{{ product.name }}</strong>
+            </td>
+
+            <td>{{ product.quantity }}</td>
+
+            <td>₹{{ product.price }}</td>
+
+            <td>
+              {% if product.quantity == 0 %}
+                <span class="status out">Out of Stock</span>
+              {% elif product.quantity < 10 %}
+                <span class="status low">Low Stock</span>
+              {% else %}
+                <span class="status ok">In Stock</span>
+              {% endif %}
+            </td>
+
+            <td>
+              {% if user.is_superuser %}
+                <a href="/edit/{{ product.id }}/" class="btn btn-warning btn-sm">Edit</a>
+                <a href="/delete/{{ product.id }}/" class="btn btn-danger btn-sm">Delete</a>
+              {% else %}
+                <span class="text-muted">No Access</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
